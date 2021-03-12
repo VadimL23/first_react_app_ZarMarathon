@@ -1,8 +1,16 @@
 import React from "react";
 import s from "./style.module.css";
 
-const Header = ({title = 'This is title', descr='This is Description!'}) =>{
+interface IProps {
+  title?:string,
+  descr?:string    
     
+}
+
+
+const Header = (props:IProps) =>{
+    
+const {title = 'This is title', descr='This is Description!'} = props;
     return (
     <header className={s.root}>
     <div className={s.forest}></div>
