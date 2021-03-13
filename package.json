@@ -12,8 +12,8 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "concurrently \"tsc --watch\" \"react-scripts start\"",
+    "build": "concurrently \"tsc\" \"react-scripts build\"",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -34,5 +34,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.11",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.2",
+    "classnames": "^2.2.6",
+    "concurrently": "^6.0.0",
+    "typescript": "^4.2.3"
   }
 }
