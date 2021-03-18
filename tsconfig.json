@@ -13,13 +13,13 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
+    "strictNullChecks":false,
     "lib": [
       "dom",
       "es2018"
     ],
     "experimentalDecorators": true,
     "noImplicitThis": true,
-    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",

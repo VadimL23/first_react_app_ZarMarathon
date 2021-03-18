@@ -5,14 +5,16 @@ import cn from "classnames";
 
 interface IProps{
     click:()=>void,
-    
+    bgActive:boolean
 }
 
 const Navbar = (props:IProps)=>{
 
-const {click} =props;
+const {click,bgActive} =props;
 const [burger, setBurger] = useState(false);
- const styleBurger = cn(s.menuButton,{[s.active]:burger});
+ const styleBurger = cn(s.menuButton,
+                        {[s.active]:burger}, 
+                        {[s.bgActive]:bgActive} );
     
     const handlerClick = ()=>{
     setBurger(!burger);
@@ -20,7 +22,7 @@ const [burger, setBurger] = useState(false);
 }
      
      
-    return (<nav className={cn(s.root)}>
+    return (<nav id={s.navbar} className={cn(s.root)}>
   <div className={cn(s.navWrapper)}>
     <p className={cn(s.brand)} onClick={handlerClick}>
       LOGO

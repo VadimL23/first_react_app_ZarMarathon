@@ -12,6 +12,8 @@ interface IProps {
           right:number|string,
           bottom:number|string,
           left:number|string},
+    isActive:boolean,
+    handleClick:(id:number)=>void,
 }
 
 export default function PockemonCard(props :IProps){
@@ -21,18 +23,20 @@ const {
   img,
   id,
   type,
-  values} = props;
+  values,
+    isActive,
+handleClick} = props;
                            
-const [active, setActive] = useState(false);
+
     
   const handlerClick = (event:React.MouseEvent):void =>{
-        active ? setActive(false):setActive(true); 
-    }
+      handleClick(id);
+      }
  
      return(
     <div className={s.root} >
       
-       <div className={cn((s.pokemonCard),{[s.active]:active})} onClick={handlerClick}>
+       <div className={cn((s.pokemonCard),{[s.active]:isActive})} onClick={handlerClick}>
        
             <div className={s.cardFront}>
             <div className={cn(s.wrap,s.back)}>
