@@ -9,10 +9,11 @@
   -webkit-box-pack: center;
   -ms-flex-pack: center;
   justify-content: center;
+      
 }
 
 .root.bgActive {
-  background: #181d23;
+ background:rebeccapurple;
 }
 
 .root .navWrapper {
@@ -28,6 +29,7 @@
   align-items: center;
   max-width: 1400px;
   padding: 0 2rem;
+ 
 }
 
 .brand {

@@ -33,6 +33,8 @@ handleClick} = props;
       handleClick(id);
       }
  
+  console.log(isActive);
+  
      return(
     <div className={s.root} >
       
