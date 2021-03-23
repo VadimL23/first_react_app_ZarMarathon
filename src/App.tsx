@@ -7,7 +7,8 @@ import MenuHeader from "components/MenuHeader";
 import cn from "classnames";
 import s from './App.module.css';
 import "./App.css";
-
+import {FireBaseContext} from "context/firebaseContext";
+import FireBase from "service/firebase";
 
 
 
@@ -22,6 +23,8 @@ const [page, setPage] = useState('app');
 
 
     return(
+        
+        <FireBaseContext.Provider value = {new FireBase()}>
 <Switch>
        <Route path="/404"  render={()=>{
                    return(<h1>404 Not found</h1>);
@@ -52,6 +55,7 @@ const [page, setPage] = useState('app');
         </>
      
         </Switch>
+        </FireBaseContext.Provider>
     )
     
    

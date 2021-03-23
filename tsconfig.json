@@ -23,7 +23,8 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+      "noImplicitAny":false
   },
   "include": [
     "src/**/*",
