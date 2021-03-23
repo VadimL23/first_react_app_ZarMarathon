@@ -22,7 +22,7 @@ const [burger, setBurger] = useState(false);
 }
      
      
-    return (<nav id={s.navbar} className={cn(s.root)}>
+    return (<nav id={s.navbar} className={cn(s.root,{[s.bgActive]:bgActive})}>
   <div className={cn(s.navWrapper)}>
     <p className={cn(s.brand)} onClick={handlerClick}>
       LOGO

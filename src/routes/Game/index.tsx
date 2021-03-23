@@ -1,11 +1,12 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import s from "./style.module.css";
 import MenuHeader from "components/MenuHeader";
 import {useHistory} from "react-router-dom";
 import Layout from "components/Layout";
 import PockemonCard from "components/PockemonCard";
 import nonename from "assets/nonename.jpg";
-
+import database,{writePockemonData, generateKey} from "service/firebase";
+import Button from "components/Button";
 interface IPockemons{
   abilities: string[ ],
   stats: {
@@ -167,55 +168,81 @@ const POCKEMONS:IPockemons[] = [
 ];
 
 
-
  interface IProps {
      onChangePage:(page:string)=>void,
                 }
 
-
 const GamePage =(props:IProps)=>{
+    
    const {onChangePage} = props;
-  const history = useHistory();
+   const history = useHistory();
+  
     const handleClickButton =()=>{
-     history.push("/home");
+      history.push("/home");
     }
 
-    const [pockemons,setPockemons] = useState(POCKEMONS);
+    const [pockemons,setPockemons] = useState([]);
+    const [change,setChange] = useState(false);
 
     function handleCardClick(id:number):void{
-    const candidate = POCKEMONS.find((p)=>p.id==id);
-     candidate.isActive =  !candidate.isActive;
-
-    setPockemons((Prev)=>[ ...Prev,
-         candidate]
-       )}
+      pockemons.map(([key,candidate])=>{
+     
+        if (candidate.id == id) 
+        {               
+         (candidate.isActive) ? (candidate.isActive =  false):(candidate.isActive =  true)
+          
+         setPockemons(prevState=>pockemons ); 
+          setChange(prev=>!prev);
+           writePockemonData(key,candidate);
+               
+        }
+         }
+            ); 
+      
+        }
 
     
-return(
-        
-        <>
+    useEffect(()=>{
+      database.ref("pokemons").once("value",(snapshot)=>{
+          setPockemons(Object.entries(snapshot.val()));
+          });
+    },[]);
+    
 
+    const handlerClickAddPockemonToDatabase = (event:React.MouseEvent)=>{
+        
+        for (let pockemon of pockemons.values()){
+            if (pockemon[1].isActive){
+               writePockemonData(generateKey(),pockemon[1]);
+            }
+            
+        }
+     }
+    
+    
+   
+return(
+        <>
+    <Button click={handlerClickAddPockemonToDatabase}>ADD NEW POKEMON</Button>
+    
           <div className="flex">
-            {POCKEMONS.map((el,i)=><PockemonCard
+           { pockemons.map(([key,el])=>
+            <PockemonCard
              name ={el.name}
              img = {el.img}
              id = {el.id}
              type={el.type}
              values = {el.values} 
-             key={i}
+             key={el.id}
              handleClick={handleCardClick}
              isActive = {el.isActive}
-               />)}
+               />)})
         
-          </div>
-  
-    
-    
-    
-            <button className={s.btn} onClick={handleClickButton}>Home page</button>
-        </>
+        </div>
+      
+        <button className={s.btn} onClick={handleClickButton}>Home page</button>
+       </>
     );
     
 }
-
 export default GamePage;
