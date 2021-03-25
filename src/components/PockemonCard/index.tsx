@@ -1,7 +1,8 @@
-import React,{useState} from "react";
+import React,{useState, useContext} from "react";
 import s from "./style.module.css";
-import cn from 'classnames';
+import cn from "classnames";
 import cbs from "../../assets/cardbackside.jpg";
+
 
 export interface IPockemon {
   name:string,
@@ -12,12 +13,13 @@ export interface IPockemon {
           right:number|string,
           bottom:number|string,
           left:number|string},
-    isActive:boolean,
-    handleClick:(id:number)=>void,
+    isActive?:boolean,
+    handleClick?:(id:number)=>void,
         
         isSelected?:boolean,
         minimize?:boolean,
-className?:string
+classname?:string,
+     
 }
 
 export default function PockemonCard(props :IPockemon){
@@ -31,7 +33,7 @@ const {
     isActive =true,
 handleClick,
 minimize,
-className,
+classname,
 isSelected} = props;
                            
 
@@ -41,11 +43,10 @@ isSelected} = props;
       
       }
  
-  console.log(isActive);
   
      return(
   
-      
+    <div className={cn(classname)}>
        <div className={cn((s.pokemonCard),{[s.active]:isActive},{[s.selected]:isSelected})} onClick={handlerClick}>
        
             <div className={s.cardFront}>
@@ -76,6 +77,7 @@ isSelected} = props;
         </div>
 
     </div>
+         </div> 
 
     )
 }

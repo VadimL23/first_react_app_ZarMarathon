@@ -19,23 +19,34 @@ import {IPockemon} from "components/PockemonCard";
 
  const GamePage = () => {
     
-    const [pockemon, setPockemon] = useState([]);
-    
-    const setPockemonToContext = (P:IPockemon[]) =>{    
-        setPockemon((Prev)=>P);
+    const [pockemons, setPockemons] = useState([]);
+     const [change,setChange] = useState(false);
+     
+     
+    const setPockemonToContext = (P:IPockemon) =>{    
+        setPockemons((Prev)=> {
+        if (!Prev.find((candidate)=>candidate.id == P.id))
+        { console.log("Set Pockemon to context",pockemons);  setChange(prev=>!prev); return [...Prev,P]} else { console.log("Not set Pockemon to context ",pockemons); return [...Prev]}
+       
+        });
+      
+        
         
 }
     
     
     const match = useRouteMatch();
+     console.log("render ",pockemons);
     return (
-        <PockemonContext.Provider value={{pockemon:[],setPockemonToContext}}>
+       <PockemonContext.Provider value={{pockemons,setPockemonToContext}}>
         <Switch>
+            
             <Route path={`${match.path}/`} exact component={StartPage} />
             <Route path={`${match.path}/board`} component={BoardPage} />
             <Route path={`${match.path}/finish`} component={FinishPage} />
+          
         </Switch>
-        </PockemonContext.Provider>
+      </PockemonContext.Provider>
     );
 };
 
