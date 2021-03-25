@@ -47,7 +47,22 @@
 .playerOne {
     position: absolute;
     top: 4.3vw;
-    left: 5vw;
+    left: 18vw;
     width: 250px;
     height: 50.3vw;
+}
+
+
+.playerTwo {
+    position: absolute;
+    top: 4.3vw;
+    right: 5vw;
+    width: 18vw;
+    height: 50.3vw;
+}
+
+.flex{}
+
+.selected {
+    margin-top: -40px;
 }

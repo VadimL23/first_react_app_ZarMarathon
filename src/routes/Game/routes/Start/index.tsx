@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import s from "./style.module.css";
 import MenuHeader from "components/MenuHeader";
-import {useHistory} from "react-router-dom";
+import {useHistory,useRouteMatch} from "react-router-dom";
 import Layout from "components/Layout";
 import PockemonCard from "components/PockemonCard";
 import nonename from "assets/nonename.jpg";
@@ -9,6 +9,8 @@ import nonename from "assets/nonename.jpg";
 import FireBase from "service/firebase";
 import Button from "components/Button";
 import {FireBaseContext} from "context/firebaseContext";
+import {PockemonContext} from "context/pockemonContext";
+
 
 interface IPockemons{
   abilities: string[ ],
@@ -179,24 +181,34 @@ const StartPage =(props:IProps)=>{
   const firebase =  useContext(FireBaseContext);
    const {onChangePage} = props;
    const history = useHistory();
-  
+     const match = useRouteMatch();
+    
     const handleClickButton =()=>{
       history.push("/home");
     }
 
     const [pockemons,setPockemons] = useState([]);
     const [change,setChange] = useState(false);
+    const {pockemon,setPockemonToContext} = useContext(PockemonContext);
+    
+    
 
     function handleCardClick(id:number):void{
       pockemons.map(([key,candidate])=>{
      
         if (candidate.id == id) 
-        {               
-         (candidate.isActive) ? (candidate.isActive =  false):(candidate.isActive =  true);
+        {            
+      
+            
+        // (candidate.isActive) ? (candidate.isActive =  false):(candidate.isActive =  true);
           (candidate.isSelected) ? (candidate.isSelected =  false):(candidate.isSelected =  true);
-         setPockemons(prevState=>pockemons ); 
-          setChange(prev=>!prev);
-        firebase.postPockemon(key,candidate);
+       
+        setPockemons(prevState=>{return {candidate,...prevState}} ); 
+        
+        setPockemonToContext(candidate);
+                 
+       setChange(prev=>!prev);
+      firebase.postPockemon(key,candidate);
                
         }
          }
@@ -219,7 +231,7 @@ const StartPage =(props:IProps)=>{
     useEffect(()=>{
       firebase.getPockemonSoket((pockemons)=>{
        setPockemons(Object.entries(pockemons));
-          
+       
       });
     },[]);
     
@@ -227,7 +239,11 @@ const StartPage =(props:IProps)=>{
     const handlerClickAddPockemonToDatabase = (event:React.MouseEvent)=>{
         const data = POCKEMONS;
         firebase.addPockemon(data);
-        
+                             
+//                             ,
+//                           async ()=> {await getPockemons();}
+//                            );
+//        
 //        for (let pockemon of pockemons.values()){
 //            if (pockemon[1].isActive){
 //               writePockemonData(generateKey(),pockemon[1]);
@@ -236,15 +252,18 @@ const StartPage =(props:IProps)=>{
 //        }
      }
     
-    
+  
    
 return(
         <>
-    <Button click={handlerClickAddPockemonToDatabase}>ADD NEW POKEMON</Button>
     
-          <div className="flex">
+    <Button click={()=>history.push(`${match.path}board`)}>Start game</Button>
+     
+    
+    <div className="flex">
            { pockemons.map(([key,el])=>
             <PockemonCard
+             classname={s.Root}
              name ={el.name}
              img = {el.img}
              id = {el.id}
@@ -253,10 +272,11 @@ return(
              key={key}
              handleClick={handleCardClick}
              isActive = {el.isActive}
+              isSelected = {el.isSelected && el.isSelected}
                />)}
         
         </div>
-      
+    
         <button className={s.btn} onClick={handleClickButton}>Home page</button>
        </>
     );
